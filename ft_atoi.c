@@ -6,7 +6,7 @@
 /*   By: iryoga </var/mail/iryoga>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 21:02:13 by iryoga            #+#    #+#             */
-/*   Updated: 2022/06/01 22:54:39 by iryoga           ###   ########.fr       */
+/*   Updated: 2022/06/02 21:32:04 by iryoga           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,25 @@ static int	ft_isspace(int c);
 
 int	ft_atoi(const char *str)
 {
+	char	*s;
 	long	i;
-	size_t	j;
+	int		j;
 	int		is;
 
 	i = 0;
 	j = 0;
 	is = 0;
-	while (ft_isspace(str[0]))
-		str++;
-	if (str[j] == '+' || str[j] == '-')
+	s = (char *)str;
+	while (ft_isspace(s[0]))
+		s++;
+	if (s[j] == '+' || s[j] == '-')
 		j++;
-	while (ft_isdigit(str[j]))
-		i = i * 10 + (long)(str[j++] - '0');
-	if (str[0] == '-')
+	while (ft_isdigit(s[j]))
+		i = i * 10 + (long)(s[j++] - '0');
+	if (s[0] == '-')
 		i *= -1;
-	if (--j >= strlen("9223372036854775807"))
-		is = ft_isloverflow(str, j);
+	if (--j >= 19)
+		is = ft_isloverflow(s, j);
 	if (is == 1 || is == -1)
 		i = 9223372036854775807 * is;
 	if (is == -1)
@@ -47,7 +49,7 @@ static int	ft_isspace(int c)
 c == '\f' || c == '\r' || c == ' ');
 }
 
-static int	ft_isloverflow(char *s, size_t digit)
+static int	ft_isloverflow(char *s, int digit)
 {
 	int		sign;
 	char	edge[20];
@@ -64,7 +66,7 @@ static int	ft_isloverflow(char *s, size_t digit)
 		}
 		s++;
 	}
-	if (digit > strlen("9223372036854775807"))
+	if (digit > 19)
 		return (sign);
 	if (ft_strncmp(edge, s, 19) < 0)
 		return (sign);
